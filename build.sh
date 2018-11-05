@@ -26,6 +26,8 @@ esac
 # It appears that Kaniko doesn't write any blobs to the cache-dir yet... :(
 echo Please ignore the warning about retrieving image from cache.
 # Call Kaniko's executor with some arguments that are helpful within the context of a GitLab job.
+# Apparently, the proxy-related build-args are still needed even though these are specified in config.json.
+# https://github.com/GoogleContainerTools/kaniko/issues/432
 /kaniko/executor \
     --build-arg http_proxy="$http_proxy" \
     --build-arg https_proxy="$https_proxy" \
