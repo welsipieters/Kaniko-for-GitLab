@@ -1,3 +1,4 @@
+mkdir -p ~/.docker
 echo "{
   \"auths\":{
     \"$CI_REGISTRY\": {
