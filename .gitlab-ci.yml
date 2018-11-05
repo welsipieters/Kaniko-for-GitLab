@@ -1,3 +1,6 @@
+stages:
+- build and push
+
 build:
  stage: build and push
  only:
