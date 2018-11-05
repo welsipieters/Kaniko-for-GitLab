@@ -1,0 +1,10 @@
+build:
+ stage: build and push
+ only:
+ - master
+ # Use the image from dockerhub for now.
+ image: mpcref/kaniko-for-gitlab
+ script:
+ # Build and push to project's registry.
+ # TODO: push to dockerhub.
+ - build
