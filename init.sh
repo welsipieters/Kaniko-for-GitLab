@@ -1,4 +1,22 @@
-echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"gitlab-ci-token\",\"password\":\"$CI_JOB_TOKEN\"}},\"credHelpers\":{\"gcr.io\":\"gcr\"}}" > ~/.docker/config.json
+echo "{
+  \"auths\":{
+    \"$CI_REGISTRY\": {
+      \"username\":\"gitlab-ci-token\",
+      \"password\":\"$CI_JOB_TOKEN\"
+    }
+  },
+  \"credHelpers\": {
+    \"gcr.io\":\"gcr\"
+  },
+  \"proxies\": {
+    \"default\": {
+      \"ftpProxy\": \"$ftp_proxy\",
+      \"httpProxy\": \"$http_proxy\",
+      \"httpsProxy\": \"$https_proxy\",
+      \"noProxy\": \"$no_proxy\"
+    }
+  }
+}" > ~/.docker/config.json
 echo "Using GitLab job credentials for authorization."
 # Ugly GitLab shell detection work-around.
 # The issue will be resolved by this merge request:
