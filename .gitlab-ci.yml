@@ -6,7 +6,7 @@ build:
  only:
  - master
  # Use the latest image in order to build and push the new image.
- image: registry.gitlab.com/mpcref/kaniko-for-gitlab
+ image: mpcref/kaniko-for-gitlab
  script:
  # Build and push as latest to project's registry.
  # TODO: push to dockerhub.
