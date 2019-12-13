@@ -1,6 +1,6 @@
 # Kaniko for GitLab
 
-A Docker image that makes it easy to use Kaniko in you GitLab jobs.
+A Docker image that makes it easy to use Kaniko in your GitLab jobs.
 
 Docker image hosted at: https://hub.docker.com/r/mpcref/kaniko-for-gitlab/
 
