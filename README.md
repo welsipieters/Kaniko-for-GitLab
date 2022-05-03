@@ -6,7 +6,7 @@ Docker image hosted at: https://hub.docker.com/r/mpcref/kaniko-for-gitlab/
 
 .gitlab-ci.yaml example:
 
-```
+```yaml
 simple example:
  stage: build and push
  # The image uses the job's credentials by default.
