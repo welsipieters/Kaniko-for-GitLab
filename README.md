@@ -1,37 +1,96 @@
-# Kaniko for GitLab
+# Forked kaniko-for-gitlab
 
-A Docker image that makes it easy to use Kaniko in your GitLab jobs.
+This repository is a fork of the [kaniko-for-gitlab](https://gitlab.com/cref/docker/kaniko-for-gitlab) project originally created by [Michiel Crefcoeur](https://gitlab.com/cref). The original project provides a convenient wrapper for using Kaniko in GitLab CI environments.
 
-Docker image hosted at: https://hub.docker.com/r/mpcref/kaniko-for-gitlab/
+## Why this fork?
 
-.gitlab-ci.yaml example:
+The original kaniko-for-gitlab project is an excellent tool that simplifies the use of Kaniko in GitLab CI. However, it was last updated about 5 years ago, and I needed some additional options that weren't available in the original version.
+
+Specifically, this fork adds the ability to:
+
+1. Specify a custom Dockerfile path
+2. Pass multiple build arguments to the Kaniko executor
+
+These additions allow for more flexibility in CI/CD pipelines, especially for projects with complex build requirements or non-standard Dockerfile locations.
+
+## Changes from the original
+
+The main changes in this fork are:
+
+1. Modified `build.sh` script to accept `--dockerfile` and `--build-arg` options
+2. Default behavior to push images to the GitLab Container Registry
+3. Updated documentation to reflect these changes
+
+## Usage
+
+### Basic Usage
+
+To use this forked version of kaniko-for-gitlab in your GitLab CI pipeline, add the following to your `.gitlab-ci.yml` file:
 
 ```yaml
-simple example:
- stage: build and push
- # The image uses the job's credentials by default.
- image: mpcref/kaniko-for-gitlab
- script:
- # The build command wraps /kaniko/executor and uses some
- # default arguments that make sense within a GitLab job
- # For instance, it will use $CI_REGISTRY_IMAGE as the base
- # for the destination. See build.sh source for details.
- - build
-
-more examples:
- stage: build and push
- image: mpcref/kaniko-for-gitlab
- script:
- # If the first argument starts with a ':' or a '/' character,
- # it will be appended to the base destination.
- - build :my-tag
- - build /my-image
- - build /my-image:my-tag
- # Use docker hub as the destination:
- - build my-public-repo/my-image:my-tag
- # All other kaniko arguments (such as no-push) can be used.
- # https://github.com/GoogleContainerTools/kaniko#additional-flags
- - build /foo --no-push
+build_and_push:
+  stage: build
+  image: your-registry/kaniko-for-gitlab:latest
+  script:
+    - build your-image:your-tag
 ```
 
-Further documentation is coming.
+This will build the Dockerfile in your project root and push it to your GitLab container registry.
+
+### Advanced Usage with New Features
+
+To take advantage of the new features in this fork, you can use the following options:
+
+1. Specifying a custom Dockerfile:
+
+```yaml
+build_and_push:
+  stage: build
+  image: your-registry/kaniko-for-gitlab:latest
+  script:
+    - build your-image:your-tag --dockerfile path/to/your/Dockerfile
+```
+
+2. Passing build arguments:
+
+```yaml
+build_and_push:
+  stage: build
+  image: your-registry/kaniko-for-gitlab:latest
+  script:
+    - build your-image:your-tag --build-arg ARG1=value1 --build-arg ARG2=value2
+```
+
+3. Combining both options:
+
+```yaml
+build_and_push:
+  stage: build
+  image: your-registry/kaniko-for-gitlab:latest
+  script:
+    - build your-image:your-tag --dockerfile path/to/your/Dockerfile --build-arg ARG1=value1 --build-arg ARG2=value2
+```
+
+### Additional Options
+
+The `build` command supports all the options that Kaniko's executor does. Some commonly used options include:
+
+- `--no-push`: Build the image but don't push it to a registry
+- `--cache=true`: Enable caching (default in this wrapper)
+- `--cache-repo`: Specify a custom cache repository
+
+Example:
+
+```yaml
+build_without_push:
+  stage: build
+  image: your-registry/kaniko-for-gitlab:latest
+  script:
+    - build your-image:your-tag --no-push
+```
+
+## Acknowledgements
+
+This project builds upon the work done by Michiel Crefcoeur in the original kaniko-for-gitlab project. We are grateful for their initial implementation and the foundation it provided.
+
+If you find these additions useful, feel free to use this fork. However, always check the original repository for any updates or newer versions that might incorporate similar functionality.
